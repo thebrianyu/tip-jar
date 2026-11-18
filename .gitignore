@@ -1,0 +1,10 @@
+# Secrets: never commit
+.env
+
+# Foundry build output (regenerated on every build)
+contracts/out/
+contracts/cache/
+contracts/broadcast/*/31337/
+
+# macOS clutter
+.DS_Store
