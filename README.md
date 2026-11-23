@@ -8,7 +8,7 @@ A tip jar smart contract on Base Sepolia (a free test network) that anyone can p
 |---|---|
 | 0. Setup | ✅ Done |
 | 1. Contract | ✅ Done |
-| 2. Tests | ⬜ |
+| 2. Tests | ✅ Done (7 passing) |
 | 3. Deploy | ⬜ |
 | 4. Web page | ⬜ |
 | 5. Review | ⬜ |
@@ -58,3 +58,10 @@ A tip jar smart contract on Base Sepolia (a free test network) that anyone can p
 - **Checks-effects-interactions.** `withdraw()` checks the caller first, records the event next, and sends ETH last. Sending ETH hands control to outside code, so all bookkeeping should already be finished.
 - **Events are the contract's public log.** `TipReceived` and `Withdrawn` don't change any balances, but the web page will read them to show recent tips.
 - **`view` functions only read.** `getBalance()` changes nothing, so calling it from outside costs no gas.
+
+### Milestone 2: Tests
+- **A test that has never failed proves nothing.** We broke the zero-tip check on purpose and watched `test_RevertWhen_TipIsZero` fail, then restored it and watched it pass.
+- **Cheatcodes control the simulated chain.** `vm.prank` pretends to be a given wallet, `vm.deal` hands out fake ETH, and `vm.expectRevert` / `vm.expectEmit` say what must happen on the next call.
+- **Check *why* something failed, not just *that* it failed.** The tests expect the specific error (`NotOwner`, `ZeroTip`, `MessageTooLong(141, 140)`), so a call that fails for the wrong reason doesn't count as a pass.
+- **Test the edges.** Bugs cluster at boundaries, so we check 140 bytes (allowed) and 141 bytes (rejected).
+- **Fresh state per test.** `setUp()` deploys a new jar before every test, so tests can't affect each other.
