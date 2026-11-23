@@ -7,7 +7,7 @@ A tip jar smart contract on Base Sepolia (a free test network) that anyone can p
 | Milestone | Status |
 |---|---|
 | 0. Setup | ✅ Done |
-| 1. Contract | ⬜ |
+| 1. Contract | ✅ Done |
 | 2. Tests | ⬜ |
 | 3. Deploy | ⬜ |
 | 4. Web page | ⬜ |
@@ -51,3 +51,10 @@ A tip jar smart contract on Base Sepolia (a free test network) that anyone can p
 - **Test networks use free, valueless ETH.** Base Sepolia (chain ID 84532) lets us practice with faucet ETH. A faucet only needs the address. Anyone asking for a key is a scammer.
 - **Dependencies are pinned.** Foundry's test library is included as a git submodule locked to an exact version (v1.17.0), so the project builds the same way everywhere.
 - **Commits carry an identity.** Every commit records an author name and email, and both become public when pushed to a public repo.
+
+### Milestone 1: Contract
+- **Access control by hand.** The `onlyOwner` modifier compares `msg.sender` (whoever is calling) with the `owner` saved at deploy time, and rejects everyone else. `immutable` means the owner can never be changed.
+- **Reject bad input early.** `tip()` reverts on zero ETH or a message over 140 bytes. A revert undoes the whole transaction and returns the sender's ETH.
+- **Checks-effects-interactions.** `withdraw()` checks the caller first, records the event next, and sends ETH last. Sending ETH hands control to outside code, so all bookkeeping should already be finished.
+- **Events are the contract's public log.** `TipReceived` and `Withdrawn` don't change any balances, but the web page will read them to show recent tips.
+- **`view` functions only read.** `getBalance()` changes nothing, so calling it from outside costs no gas.
