@@ -2,5 +2,15 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+# Pin the compiler so the build (and BaseScan verification) is identical every time.
+solc_version = "0.8.38"
+
+# Network nicknames. The ${...} values are read from .env, so no secrets live in this file.
+[rpc_endpoints]
+base_sepolia = "${BASE_SEPOLIA_RPC_URL}"
+
+# Where to verify source code. Base Sepolia is chain 84532.
+[etherscan]
+base_sepolia = { key = "${BASESCAN_API_KEY}", chain = 84532 }
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

@@ -8,3 +8,5 @@ contracts/broadcast/*/31337/
 
 # macOS clutter
 .DS_Store
+contracts/broadcast/**/dry-run/
+contracts/broadcast/**/*.recovery.lock
